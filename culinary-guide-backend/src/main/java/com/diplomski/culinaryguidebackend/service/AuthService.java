@@ -1,5 +1,6 @@
 package com.diplomski.culinaryguidebackend.service;
 
+import com.diplomski.culinaryguidebackend.config.AdminProperties;
 import com.diplomski.culinaryguidebackend.dto.AuthResponse;
 import com.diplomski.culinaryguidebackend.dto.LoginRequest;
 import com.diplomski.culinaryguidebackend.dto.RegisterRequest;
@@ -19,11 +20,18 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final AdminProperties adminProperties;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       JwtService jwtService, AdminProperties adminProperties) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.adminProperties = adminProperties;
+    }
+
+    public AuthResponse toResponse(User user) {
+        return new AuthResponse(user.getName(), user.getEmail(), adminProperties.isAdmin(user.getEmail()));
     }
 
     public AuthResult register(RegisterRequest request) {
@@ -43,7 +51,7 @@ public class AuthService {
         userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user.getEmail());
-        return new AuthResult(jwtToken, new AuthResponse(user.getName(), user.getEmail()));
+        return new AuthResult(jwtToken, toResponse(user));
     }
 
     public AuthResult login(LoginRequest request) {
@@ -61,6 +69,6 @@ public class AuthService {
         }
 
         String jwtToken = jwtService.generateToken(user.getEmail());
-        return new AuthResult(jwtToken, new AuthResponse(user.getName(), user.getEmail()));
+        return new AuthResult(jwtToken, toResponse(user));
     }
 }

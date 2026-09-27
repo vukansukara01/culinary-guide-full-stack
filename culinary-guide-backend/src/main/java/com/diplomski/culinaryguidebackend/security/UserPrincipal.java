@@ -11,17 +11,26 @@ import java.util.List;
 public class UserPrincipal implements UserDetails {
 
     private final User user;
+    private final boolean admin;
 
-    public UserPrincipal(User user) {
+    public UserPrincipal(User user, boolean admin) {
         this.user = user;
+        this.admin = admin;
     }
 
     public User getUser() {
         return user;
     }
 
+    public boolean isAdmin() {
+        return admin;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (admin) {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 

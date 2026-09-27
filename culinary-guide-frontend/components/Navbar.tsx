@@ -64,16 +64,18 @@ export function Navbar() {
               Favoriti
             </Link>
           ) : null}
-          <Link
-            href="/import"
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "sm" }),
-              "text-muted-foreground"
-            )}
-          >
-            <Download className="size-3.5" />
-            Uvoz
-          </Link>
+          {user?.admin ? (
+            <Link
+              href="/import"
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "text-muted-foreground"
+              )}
+            >
+              <Download className="size-3.5" />
+              Uvoz
+            </Link>
+          ) : null}
 
           {isReady ? (
             isAuthenticated ? (
@@ -178,17 +180,19 @@ export function Navbar() {
                 Favoriti
               </Link>
             ) : null}
-            <Link
-              href="/import"
-              onClick={closeMenu}
-              className={cn(
-                buttonVariants({ variant: "ghost" }),
-                "h-11 min-h-11 justify-start"
-              )}
-            >
-              <Download className="size-4" />
-              Uvoz
-            </Link>
+            {user?.admin ? (
+              <Link
+                href="/import"
+                onClick={closeMenu}
+                className={cn(
+                  buttonVariants({ variant: "ghost" }),
+                  "h-11 min-h-11 justify-start"
+                )}
+              >
+                <Download className="size-4" />
+                Uvoz
+              </Link>
+            ) : null}
 
             <div className="my-1 border-t" />
 

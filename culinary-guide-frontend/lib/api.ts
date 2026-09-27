@@ -292,10 +292,14 @@ export async function removeFavorite(restaurantId: string | number): Promise<voi
 
 export async function importPlacesFromGoogle(): Promise<PlacesImportResult> {
   const res = await fetch(`${API_BASE_URL}/api/admin/import/places`, {
+    ...withCredentials,
     method: "POST",
   });
 
   if (!res.ok) {
+    if (res.status === 401 || res.status === 403) {
+      throw new Error("Samo administrator može pokrenuti uvoz restorana.");
+    }
     let message = "Neuspješan uvoz restorana iz Google Places";
     try {
       const data = await res.json();

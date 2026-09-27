@@ -9,4 +9,6 @@ import lombok.Getter;
 public class AuthResponse {
     private String name;
     private String email;
+    /** Samo za prikaz UI-a — stvarna provjera je na backendu (hasRole("ADMIN")) */
+    private boolean admin;
 }

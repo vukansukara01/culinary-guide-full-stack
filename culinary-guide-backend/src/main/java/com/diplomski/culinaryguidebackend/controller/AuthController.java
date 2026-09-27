@@ -4,7 +4,6 @@ import com.diplomski.culinaryguidebackend.config.JwtProperties;
 import com.diplomski.culinaryguidebackend.dto.AuthResponse;
 import com.diplomski.culinaryguidebackend.dto.LoginRequest;
 import com.diplomski.culinaryguidebackend.dto.RegisterRequest;
-import com.diplomski.culinaryguidebackend.model.User;
 import com.diplomski.culinaryguidebackend.security.UserPrincipal;
 import com.diplomski.culinaryguidebackend.service.AuthService;
 import com.diplomski.culinaryguidebackend.service.AuthService.AuthResult;
@@ -54,8 +53,7 @@ public class AuthController {
         if (principal == null) {
             return ResponseEntity.noContent().build();
         }
-        User user = principal.getUser();
-        return ResponseEntity.ok(new AuthResponse(user.getName(), user.getEmail()));
+        return ResponseEntity.ok(authService.toResponse(principal.getUser()));
     }
 
     private ResponseEntity<AuthResponse> withSessionCookie(AuthResult result) {
