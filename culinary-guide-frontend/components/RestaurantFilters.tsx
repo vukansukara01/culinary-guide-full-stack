@@ -60,14 +60,20 @@ export function RestaurantFilters({ cuisines }: RestaurantFiltersProps) {
   const filterGrid = (
     <>
       <div className="space-y-2">
-        <Label>Sortiranje</Label>
+        <Label htmlFor="filter-sort" id="filter-sort-label">
+          Sortiranje
+        </Label>
         <Select
           value={sort}
           onValueChange={(value) => {
             if (value != null) updateParams({ sort: String(value) });
           }}
         >
-          <SelectTrigger className="h-11 min-h-11 w-full sm:h-8 sm:min-h-8">
+          <SelectTrigger
+            id="filter-sort"
+            aria-labelledby="filter-sort-label"
+            className="h-11 min-h-11 w-full sm:h-8 sm:min-h-8"
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -80,14 +86,20 @@ export function RestaurantFilters({ cuisines }: RestaurantFiltersProps) {
       </div>
 
       <div className="space-y-2">
-        <Label>Kuhinja</Label>
+        <Label htmlFor="filter-cuisine" id="filter-cuisine-label">
+          Kuhinja
+        </Label>
         <Select
           value={cuisine || "all"}
           onValueChange={(value) => {
             if (value != null) updateParams({ cuisine: String(value) });
           }}
         >
-          <SelectTrigger className="h-11 min-h-11 w-full sm:h-8 sm:min-h-8">
+          <SelectTrigger
+            id="filter-cuisine"
+            aria-labelledby="filter-cuisine-label"
+            className="h-11 min-h-11 w-full sm:h-8 sm:min-h-8"
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -102,7 +114,9 @@ export function RestaurantFilters({ cuisines }: RestaurantFiltersProps) {
       </div>
 
       <div className="space-y-2">
-        <Label>Minimalna ocjena</Label>
+        <Label htmlFor="filter-rating" id="filter-rating-label">
+          Minimalna ocjena
+        </Label>
         <div className="flex gap-2">
           <Select
             value={minRating || "all"}
@@ -110,7 +124,11 @@ export function RestaurantFilters({ cuisines }: RestaurantFiltersProps) {
               if (value != null) updateParams({ minRating: String(value) });
             }}
           >
-            <SelectTrigger className="h-11 min-h-11 w-full sm:h-8 sm:min-h-8">
+            <SelectTrigger
+              id="filter-rating"
+              aria-labelledby="filter-rating-label"
+              className="h-11 min-h-11 w-full sm:h-8 sm:min-h-8"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -135,7 +153,7 @@ export function RestaurantFilters({ cuisines }: RestaurantFiltersProps) {
 
   return (
     <div
-      className={`mb-6 space-y-3 rounded-2xl border bg-card p-3 sm:mb-8 sm:p-4 ${
+      className={`mb-6 space-y-3 rounded-lg border bg-card p-3 shadow-sm sm:mb-8 sm:p-4 ${
         isPending ? "opacity-70" : ""
       }`}
     >
@@ -165,7 +183,7 @@ export function RestaurantFilters({ cuisines }: RestaurantFiltersProps) {
           <SlidersHorizontal className="size-4" />
           Filteri i sortiranje
           {hasActiveFilters ? (
-            <span className="rounded-full bg-emerald-800 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+            <span className="rounded-sm bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground">
               aktivno
             </span>
           ) : null}

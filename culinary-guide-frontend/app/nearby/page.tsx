@@ -88,25 +88,29 @@ export default function NearbyPage() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-10">
       <div className="mb-6 max-w-2xl space-y-2 sm:mb-8 sm:space-y-3">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          Restorani u blizini
-        </h1>
+        <h1 className="text-2xl sm:text-3xl">Restorani u blizini</h1>
         <p className="text-sm text-muted-foreground sm:text-base">
           Koristite svoju trenutnu lokaciju da pronađete najbliže restorane u
           odabranom radijusu.
         </p>
       </div>
 
-      <div className="mb-8 flex flex-col gap-3 rounded-2xl border bg-card p-4 sm:mb-10 sm:flex-row sm:items-end sm:gap-4 sm:p-5">
+      <div className="mb-8 flex flex-col gap-3 rounded-lg border bg-card p-4 shadow-sm sm:mb-10 sm:flex-row sm:items-end sm:gap-4 sm:p-5">
         <div className="space-y-2 sm:flex-1">
-          <Label htmlFor="radius">Radijus pretrage</Label>
+          <Label htmlFor="radius" id="radius-label">
+            Radijus pretrage
+          </Label>
           <Select
             value={radius}
             onValueChange={(value) => {
               if (value != null) setRadius(String(value));
             }}
           >
-            <SelectTrigger id="radius" className="h-11 min-h-11 w-full sm:h-8 sm:min-h-8 sm:max-w-44">
+            <SelectTrigger
+              id="radius"
+              aria-labelledby="radius-label"
+              className="h-11 min-h-11 w-full sm:h-8 sm:min-h-8 sm:max-w-44"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -123,7 +127,7 @@ export default function NearbyPage() {
           onClick={findNearbyRestaurants}
           disabled={isLoading}
           size="lg"
-          className="h-12 min-h-12 w-full bg-emerald-800 text-white hover:bg-emerald-800/90 sm:h-9 sm:min-h-9 sm:w-auto"
+          className="h-12 min-h-12 w-full sm:h-9 sm:min-h-9 sm:w-auto"
         >
           {isLoading ? (
             <>
@@ -155,7 +159,7 @@ export default function NearbyPage() {
 
       {isLoading ? (
         <div className="flex flex-col items-center justify-center gap-3 py-20 text-muted-foreground">
-          <Loader2 className="size-8 animate-spin text-emerald-800" />
+          <Loader2 className="size-8 animate-spin text-primary" />
           <p className="text-sm">Tražimo restorane u vašoj blizini...</p>
         </div>
       ) : null}

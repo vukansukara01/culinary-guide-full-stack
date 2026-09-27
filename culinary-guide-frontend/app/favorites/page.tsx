@@ -60,9 +60,7 @@ export default function FavoritesPage() {
   return (
     <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-10">
       <div className="mb-6 space-y-2 sm:mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          Favoriti
-        </h1>
+        <h1 className="text-2xl sm:text-3xl">Favoriti</h1>
         <p className="text-sm text-muted-foreground sm:text-base">
           Restorani koje ste sačuvali za kasnije.
         </p>
@@ -80,7 +78,7 @@ export default function FavoritesPage() {
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
             <Link href="/login?redirect=/favorites">
-              <Button className="h-11 min-h-11 bg-emerald-800 text-white hover:bg-emerald-800/90">
+              <Button className="h-11 min-h-11">
                 Prijavi se
               </Button>
             </Link>

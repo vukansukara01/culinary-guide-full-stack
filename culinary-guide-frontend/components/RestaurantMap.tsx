@@ -43,7 +43,7 @@ export function RestaurantMap({
 
   return (
     <div className={cn("space-y-3", className)}>
-      <div className="-mx-4 overflow-hidden border-y bg-muted sm:mx-0 sm:rounded-2xl sm:border">
+      <div className="-mx-4 overflow-hidden border-y bg-muted sm:mx-0 sm:rounded-lg sm:border">
         <iframe
           title={`Mapa — ${name}`}
           src={embedUrl}
@@ -61,7 +61,7 @@ export function RestaurantMap({
           rel="noopener noreferrer"
           className={cn(
             buttonVariants({ size: "lg" }),
-            "h-12 min-h-12 bg-emerald-800 text-white hover:bg-emerald-800/90 sm:h-9 sm:min-h-9 sm:flex-1"
+            "h-12 min-h-12 sm:h-9 sm:min-h-9 sm:flex-1"
           )}
         >
           <Navigation className="size-4" />

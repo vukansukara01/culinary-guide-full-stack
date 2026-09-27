@@ -10,7 +10,6 @@ import {
   MapPin,
   Menu,
   UserPlus,
-  UtensilsCrossed,
   X,
 } from "lucide-react";
 
@@ -27,20 +26,22 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/90 pt-[env(safe-area-inset-top)] backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b bg-background/95 pt-[env(safe-area-inset-top)] backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6">
         <Link
           href="/"
-          className="flex min-w-0 items-center gap-2 font-heading text-base font-semibold tracking-tight"
+          className="flex min-w-0 items-baseline gap-2"
           onClick={closeMenu}
         >
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-emerald-800 text-white">
-            <UtensilsCrossed className="size-4" />
+          <span className="font-heading text-lg font-medium tracking-tight sm:text-xl">
+            Kulinarski vodič
           </span>
-          <span className="truncate">Kulinarski vodič</span>
+          <span className="hidden text-xs tracking-wide text-muted-foreground uppercase sm:inline">
+            Banja Luka
+          </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Glavna navigacija" className="hidden items-center gap-0.5 md:flex">
           <Link
             href="/"
             className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
@@ -49,7 +50,7 @@ export function Navbar() {
           </Link>
           <Link
             href="/nearby"
-            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
           >
             <MapPin className="size-3.5" />
             U blizini
@@ -65,7 +66,10 @@ export function Navbar() {
           ) : null}
           <Link
             href="/import"
-            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "sm" }),
+              "text-muted-foreground"
+            )}
           >
             <Download className="size-3.5" />
             Uvoz
@@ -95,10 +99,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/register"
-                  className={cn(
-                    buttonVariants({ size: "sm" }),
-                    "bg-emerald-800 text-white hover:bg-emerald-800/90"
-                  )}
+                  className={cn(buttonVariants({ size: "sm" }))}
                 >
                   <UserPlus className="size-3.5" />
                   Registracija
@@ -139,7 +140,10 @@ export function Navbar() {
 
       {menuOpen ? (
         <div className="border-t bg-background md:hidden">
-          <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">
+          <nav
+            aria-label="Mobilni meni"
+            className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3"
+          >
             <Link
               href="/"
               onClick={closeMenu}
@@ -226,7 +230,7 @@ export function Navbar() {
                     onClick={closeMenu}
                     className={cn(
                       buttonVariants(),
-                      "h-11 min-h-11 justify-start bg-emerald-800 text-white hover:bg-emerald-800/90"
+                      "h-11 min-h-11 justify-start"
                     )}
                   >
                     <UserPlus className="size-4" />

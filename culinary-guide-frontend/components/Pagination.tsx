@@ -121,8 +121,7 @@ export function Pagination({
                   size: "icon-sm",
                 }),
                 "size-10 sm:size-7",
-                item === current &&
-                  "bg-emerald-800 text-white hover:bg-emerald-800/90"
+                item === current && "pointer-events-none"
               )}
             >
               {item}

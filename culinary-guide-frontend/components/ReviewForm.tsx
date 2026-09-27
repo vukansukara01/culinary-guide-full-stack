@@ -79,9 +79,7 @@ export function ReviewForm({ restaurantId }: ReviewFormProps) {
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
           <Link href={loginHref}>
-            <Button className="bg-emerald-800 text-white hover:bg-emerald-800/90">
-              Prijavi se
-            </Button>
+            <Button>Prijavi se</Button>
           </Link>
           <Link href="/register">
             <Button variant="outline">Registruj se</Button>
@@ -100,8 +98,12 @@ export function ReviewForm({ restaurantId }: ReviewFormProps) {
       ) : null}
 
       <div className="space-y-2">
-        <Label>Ocena</Label>
-        <div className="flex items-center gap-1">
+        <Label id="review-rating-label">Ocena</Label>
+        <div
+          className="flex items-center gap-1"
+          role="group"
+          aria-labelledby="review-rating-label"
+        >
           {[1, 2, 3, 4, 5].map((value) => (
             <button
               key={value}
@@ -152,7 +154,7 @@ export function ReviewForm({ restaurantId }: ReviewFormProps) {
         <p className="text-sm text-destructive">{serverError}</p>
       ) : null}
       {success ? (
-        <p className="text-sm text-emerald-600">
+        <p className="text-sm text-primary">
           Recenzija je uspješno poslana!
         </p>
       ) : null}

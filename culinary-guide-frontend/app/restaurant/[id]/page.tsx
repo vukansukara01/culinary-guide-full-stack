@@ -115,24 +115,29 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
           <RestaurantImage
             src={restaurant.imageUrl}
             alt={restaurant.name}
-            className="-mx-4 aspect-[16/10] rounded-none sm:mx-0 sm:aspect-[2/1] sm:rounded-2xl"
+            variant="hero"
+            priority
+            className="-mx-4 aspect-[16/10] rounded-none sm:mx-0 sm:aspect-[2/1] sm:rounded-lg"
             iconClassName="size-14"
           />
 
           <div className="space-y-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-emerald-800">
+                <p className="text-sm font-medium text-primary">
                   {restaurant.cuisineType}
                 </p>
-                <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-4xl">
+                <h1 className="mt-1 text-2xl sm:text-4xl">
                   {restaurant.name}
                 </h1>
               </div>
-              <div className="flex items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-2 text-amber-800">
-                <Star className="size-4 fill-amber-500 text-amber-500" />
+              <div className="flex items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-amber-950">
+                <Star
+                  className="size-4 fill-amber-600 text-amber-600"
+                  aria-hidden
+                />
                 <span className="text-sm font-semibold">{rating}</span>
-                <span className="text-xs text-amber-700/70">prosek</span>
+                <span className="text-xs text-amber-900/80">prosek</span>
               </div>
             </div>
 

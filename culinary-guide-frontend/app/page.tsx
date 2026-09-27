@@ -67,52 +67,47 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <div className="flex flex-1 flex-col">
-      <section className="relative overflow-hidden border-b bg-gradient-to-br from-emerald-950 via-stone-900 to-stone-800 text-white">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 20%, rgba(52, 211, 153, 0.35), transparent 45%), radial-gradient(circle at 80% 60%, rgba(251, 191, 36, 0.2), transparent 40%)",
-          }}
-        />
-        <div className="relative mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:gap-6 sm:px-6 sm:py-24">
-          <p className="text-xs font-medium tracking-wide text-emerald-200/90 uppercase sm:text-sm">
-            Putnički i kulinarski vodič
-          </p>
-          <h1 className="max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl">
-            Otkrijte najbolje ukuse Banja Luke
-          </h1>
-          <p className="max-w-xl text-sm text-white/75 sm:text-lg">
-            Istražite restorane, pročitajte recenzije i pronađite savršeno mjesto
-            za jelo u vašoj blizini.
-          </p>
-          <div>
+      <section className="border-b bg-background">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:px-6 sm:py-20">
+          <div className="max-w-2xl">
+            <p className="text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase">
+              Banja Luka
+            </p>
+            <h1 className="text-balance mt-3 text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
+              Gdje danas ručate?
+            </h1>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Pregledajte restorane grada, pročitajte iskrena mišljenja i
+              pronađite mjesto u vašoj blizini.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
               href="/nearby"
-              className={cn(
-                buttonVariants({ size: "lg" }),
-                "h-12 min-h-12 bg-white text-emerald-950 hover:bg-emerald-50 sm:h-9 sm:min-h-9"
-              )}
+              className={cn(buttonVariants({ size: "lg" }), "h-11 min-h-11")}
             >
               <MapPin className="size-4" />
-              Pronađi u blizini
+              Restorani u blizini
             </Link>
+            <p className="text-sm text-muted-foreground">
+              {data && !error
+                ? `${data.totalElements} mjesta u bazi`
+                : "Pretraga po lokaciji i kuhinji"}
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-14">
-        <div className="mb-5 flex items-end justify-between gap-4 sm:mb-8">
+      <section className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
+        <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
           <div>
-            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-              Svi restorani
-            </h2>
+            <h2 className="text-2xl sm:text-3xl">Svi restorani</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Sortirano po recenzijama · 20 po stranici
             </p>
           </div>
           {data && !error ? (
-            <p className="shrink-0 text-sm text-muted-foreground">
+            <p className="shrink-0 text-sm tabular-nums text-muted-foreground">
               {data.totalElements}{" "}
               {data.totalElements === 1 ? "restoran" : "restorana"}
             </p>
@@ -124,18 +119,22 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         </Suspense>
 
         {error ? (
-          <div className="rounded-xl border border-destructive/20 bg-destructive/5 px-4 py-8 text-center text-sm text-destructive">
+          <div className="rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-8 text-center text-sm text-destructive">
             {error}
           </div>
         ) : restaurants.length === 0 ? (
-          <div className="rounded-xl border bg-muted/40 px-4 py-12 text-center text-sm text-muted-foreground">
+          <div className="rounded-lg border border-dashed bg-muted/30 px-4 py-16 text-center text-sm text-muted-foreground">
             Nema restorana za odabrane filtere.
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-              {restaurants.map((restaurant) => (
-                <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+              {restaurants.map((restaurant, index) => (
+                <RestaurantCard
+                  key={restaurant.id}
+                  restaurant={restaurant}
+                  priority={index < 3}
+                />
               ))}
             </div>
             {data ? (

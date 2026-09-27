@@ -12,6 +12,45 @@ import type {
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:9090";
 
+/**
+ * Apsolutni URL za sliku.
+ * Za Google Places Photo smanjuje maxwidth (Lighthouse: Improve image delivery).
+ */
+export function resolveImageUrl(
+  url?: string | null,
+  options?: { maxWidth?: number }
+): string | null {
+  if (!url) return null;
+
+  // Placeholder demo URL-ovi — ne učitavaj (404 u konzoli / Lighthouse)
+  if (url.includes("example.com")) {
+    return null;
+  }
+
+  let resolved: string;
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    resolved = url;
+  } else {
+    const path = url.startsWith("/") ? url : `/${url}`;
+    resolved = `${API_BASE_URL}${path}`;
+  }
+
+  const maxWidth = options?.maxWidth;
+  if (
+    maxWidth &&
+    resolved.includes("maps.googleapis.com/maps/api/place/photo")
+  ) {
+    try {
+      const parsed = new URL(resolved);
+      parsed.searchParams.set("maxwidth", String(maxWidth));
+      return parsed.toString();
+    } catch {
+      return resolved;
+    }
+  }
+
+  return resolved;
+}
 export async function registerUser(
   body: RegisterRequest
 ): Promise<AuthResponse> {

@@ -119,11 +119,7 @@ export function RegisterForm() {
             <p className="text-sm text-destructive">{serverError}</p>
           ) : null}
 
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-emerald-800 text-white hover:bg-emerald-800/90"
-          >
+          <Button type="submit" disabled={isSubmitting} className="w-full">
             {isSubmitting ? "Registrujem..." : "Registruj se"}
           </Button>
 
@@ -131,7 +127,7 @@ export function RegisterForm() {
             Već imate nalog?{" "}
             <Link
               href="/login"
-              className="font-medium text-emerald-800 underline-offset-4 hover:underline"
+              className="font-medium text-primary underline-offset-4 hover:underline"
             >
               Prijavite se
             </Link>
