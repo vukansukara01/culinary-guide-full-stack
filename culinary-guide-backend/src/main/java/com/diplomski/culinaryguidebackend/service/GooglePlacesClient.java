@@ -86,7 +86,7 @@ public class GooglePlacesClient {
         }
         return UriComponentsBuilder
                 .fromUriString("https://maps.googleapis.com/maps/api/place/photo")
-                .queryParam("maxwidth", 800)
+                .queryParam("maxwidth", 480)
                 .queryParam("photo_reference", photoReference)
                 .queryParam("key", properties.getApiKey())
                 .build(true)

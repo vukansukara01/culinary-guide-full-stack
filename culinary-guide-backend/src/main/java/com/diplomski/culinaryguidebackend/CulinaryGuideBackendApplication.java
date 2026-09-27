@@ -1,6 +1,7 @@
 package com.diplomski.culinaryguidebackend;
 
 import com.diplomski.culinaryguidebackend.config.GooglePlacesProperties;
+import com.diplomski.culinaryguidebackend.config.RateLimitProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -8,7 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
-@EnableConfigurationProperties(GooglePlacesProperties.class)
+@EnableConfigurationProperties({GooglePlacesProperties.class, RateLimitProperties.class})
 public class CulinaryGuideBackendApplication {
 
     public static void main(String[] args) {

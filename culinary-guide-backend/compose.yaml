@@ -6,8 +6,13 @@ services:
       - 'MYSQL_ROOT_PASSWORD=verysecret'
     ports:
       - '3307:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   redis:
     image: 'redis:latest'
     ports:
       - '6379:6379'
+
+volumes:
+  mysql_data:

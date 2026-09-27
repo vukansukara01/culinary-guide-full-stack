@@ -34,7 +34,7 @@ public class DataSeeder implements CommandLineRunner {
                 .cuisineType("Evropska / Internacionalna")
                 .latitude(44.7812)
                 .longitude(17.2015)
-                .imageUrl("https://example.com/images/mala-stanica.jpg")
+                .imageUrl(null)
                 .averageRating(4.8)
                 .build();
 
@@ -45,7 +45,7 @@ public class DataSeeder implements CommandLineRunner {
                 .cuisineType("Tradicionalna / Roštilj")
                 .latitude(44.7656)
                 .longitude(17.1911)
-                .imageUrl("https://example.com/images/kazamat.jpg")
+                .imageUrl(null)
                 .averageRating(4.7)
                 .build();
 
@@ -56,7 +56,7 @@ public class DataSeeder implements CommandLineRunner {
                 .cuisineType("Italijanska / Pica")
                 .latitude(44.7735)
                 .longitude(17.1885)
-                .imageUrl("https://example.com/images/marchello.jpg")
+                .imageUrl(null)
                 .averageRating(4.5)
                 .build();
 
