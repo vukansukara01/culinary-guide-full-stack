@@ -9,60 +9,63 @@ import {
   useState,
 } from "react";
 
-import {
-  clearToken,
-  getToken,
-  getUser,
-  setToken,
-  setUser,
-  type AuthUser,
-} from "@/lib/auth";
+import { getCurrentUser, logoutUser } from "@/lib/api";
+import type { AuthResponse } from "@/types";
 
 interface AuthContextValue {
-  token: string | null;
-  user: AuthUser | null;
+  user: AuthResponse | null;
   isAuthenticated: boolean;
   isReady: boolean;
-  login: (token: string, user: AuthUser) => void;
-  logout: () => void;
+  login: (user: AuthResponse) => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setTokenState] = useState<string | null>(null);
-  const [user, setUserState] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthResponse | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    setTokenState(getToken());
-    setUserState(getUser());
-    setIsReady(true);
+    let cancelled = false;
+
+    getCurrentUser()
+      .then((currentUser) => {
+        if (!cancelled) setUser(currentUser);
+      })
+      .catch(() => {
+        if (!cancelled) setUser(null);
+      })
+      .finally(() => {
+        if (!cancelled) setIsReady(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const login = useCallback((newToken: string, authUser: AuthUser) => {
-    setToken(newToken);
+  const login = useCallback((authUser: AuthResponse) => {
     setUser(authUser);
-    setTokenState(newToken);
-    setUserState(authUser);
   }, []);
 
-  const logout = useCallback(() => {
-    clearToken();
-    setTokenState(null);
-    setUserState(null);
+  const logout = useCallback(async () => {
+    try {
+      await logoutUser();
+    } finally {
+      setUser(null);
+    }
   }, []);
 
   const value = useMemo(
     () => ({
-      token,
       user,
-      isAuthenticated: Boolean(token),
+      isAuthenticated: Boolean(user),
       isReady,
       login,
       logout,
     }),
-    [token, user, isReady, login, logout]
+    [user, isReady, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

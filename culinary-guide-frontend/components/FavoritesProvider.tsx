@@ -22,14 +22,15 @@ interface FavoritesContextValue {
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
-  const { token, isAuthenticated, isReady: authReady } = useAuth();
+  const { user, isAuthenticated, isReady: authReady } = useAuth();
+  const userEmail = user?.email;
   const [favoriteIds, setFavoriteIds] = useState<Set<number>>(new Set());
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (!authReady) return;
 
-    if (!isAuthenticated || !token) {
+    if (!userEmail) {
       setFavoriteIds(new Set());
       setIsReady(true);
       return;
@@ -38,7 +39,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     let cancelled = false;
     setIsReady(false);
 
-    getFavoriteIds(token)
+    getFavoriteIds()
       .then((ids) => {
         if (!cancelled) setFavoriteIds(new Set(ids));
       })
@@ -52,7 +53,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [authReady, isAuthenticated, token]);
+  }, [authReady, userEmail]);
 
   const isFavorite = useCallback(
     (restaurantId: number) => favoriteIds.has(restaurantId),
@@ -61,7 +62,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
   const toggleFavorite = useCallback(
     async (restaurantId: number) => {
-      if (!token) {
+      if (!isAuthenticated) {
         throw new Error("Morate biti prijavljeni da sačuvate restoran.");
       }
 
@@ -78,9 +79,9 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
       try {
         if (currentlyFavorite) {
-          await removeFavorite(restaurantId, token);
+          await removeFavorite(restaurantId);
         } else {
-          await addFavorite(restaurantId, token);
+          await addFavorite(restaurantId);
         }
       } catch (error) {
         setFavoriteIds((prev) => {
@@ -95,7 +96,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
         throw error;
       }
     },
-    [favoriteIds, token]
+    [favoriteIds, isAuthenticated]
   );
 
   const value = useMemo(

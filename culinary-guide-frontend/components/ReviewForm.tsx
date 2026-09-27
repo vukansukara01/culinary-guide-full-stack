@@ -22,7 +22,7 @@ interface ReviewFormProps {
 export function ReviewForm({ restaurantId }: ReviewFormProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { token, isAuthenticated, isReady, user } = useAuth();
+  const { isAuthenticated, isReady, user } = useAuth();
   const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -44,20 +44,16 @@ export function ReviewForm({ restaurantId }: ReviewFormProps) {
     setServerError(null);
     setSuccess(false);
 
-    if (!token) {
+    if (!isAuthenticated) {
       setServerError("Morate biti prijavljeni da ostavite recenziju.");
       return;
     }
 
     try {
-      await createReview(
-        restaurantId,
-        {
-          rating: values.rating,
-          comment: values.comment,
-        },
-        token
-      );
+      await createReview(restaurantId, {
+        rating: values.rating,
+        comment: values.comment,
+      });
       reset({ rating: 5, comment: "" });
       setSuccess(true);
       router.refresh();

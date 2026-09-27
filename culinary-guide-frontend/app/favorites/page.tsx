@@ -12,7 +12,8 @@ import { getFavorites } from "@/lib/api";
 import type { Restaurant } from "@/types";
 
 export default function FavoritesPage() {
-  const { token, isAuthenticated, isReady } = useAuth();
+  const { user, isAuthenticated, isReady } = useAuth();
+  const userEmail = user?.email;
   const { favoriteIds } = useFavorites();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,7 +22,7 @@ export default function FavoritesPage() {
   useEffect(() => {
     if (!isReady) return;
 
-    if (!isAuthenticated || !token) {
+    if (!userEmail) {
       setRestaurants([]);
       setIsLoading(false);
       return;
@@ -31,7 +32,7 @@ export default function FavoritesPage() {
     setIsLoading(true);
     setError(null);
 
-    getFavorites(token)
+    getFavorites()
       .then((data) => {
         if (!cancelled) setRestaurants(data);
       })
@@ -51,7 +52,7 @@ export default function FavoritesPage() {
     return () => {
       cancelled = true;
     };
-  }, [isReady, isAuthenticated, token]);
+  }, [isReady, userEmail]);
 
   const visible = restaurants.filter((restaurant) =>
     favoriteIds.has(restaurant.id)

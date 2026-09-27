@@ -51,10 +51,16 @@ export function resolveImageUrl(
 
   return resolved;
 }
+
+// JWT živi u httpOnly kolačiću koji postavlja backend — JS ga ne može pročitati,
+// pa svaki autentifikovani zahtjev mora slati kolačiće (credentials: "include").
+const withCredentials: RequestInit = { credentials: "include" };
+
 export async function registerUser(
   body: RegisterRequest
 ): Promise<AuthResponse> {
   const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
+    ...withCredentials,
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -78,6 +84,7 @@ export async function registerUser(
 
 export async function loginUser(body: LoginRequest): Promise<AuthResponse> {
   const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    ...withCredentials,
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -97,6 +104,27 @@ export async function loginUser(body: LoginRequest): Promise<AuthResponse> {
   }
 
   return res.json();
+}
+
+/** Vraća prijavljenog korisnika na osnovu kolačića, ili null (backend vraća 204). */
+export async function getCurrentUser(): Promise<AuthResponse | null> {
+  const res = await fetch(`${API_BASE_URL}/api/auth/me`, {
+    ...withCredentials,
+    cache: "no-store",
+  });
+
+  if (res.status === 204 || !res.ok) {
+    return null;
+  }
+
+  return res.json();
+}
+
+export async function logoutUser(): Promise<void> {
+  await fetch(`${API_BASE_URL}/api/auth/logout`, {
+    ...withCredentials,
+    method: "POST",
+  });
 }
 
 export async function getRestaurants(
@@ -167,17 +195,14 @@ export async function getReviews(restaurantId: string | number): Promise<Review[
 
 export async function createReview(
   restaurantId: string | number,
-  body: { rating: number; comment: string },
-  token: string
+  body: { rating: number; comment: string }
 ): Promise<Review> {
   const res = await fetch(
     `${API_BASE_URL}/api/restaurants/${restaurantId}/reviews`,
     {
+      ...withCredentials,
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     }
   );
@@ -208,16 +233,9 @@ export async function getNearbyRestaurants(
   return res.json();
 }
 
-function authHeaders(token: string): HeadersInit {
-  return {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-  };
-}
-
-export async function getFavorites(token: string): Promise<Restaurant[]> {
+export async function getFavorites(): Promise<Restaurant[]> {
   const res = await fetch(`${API_BASE_URL}/api/favorites`, {
-    headers: authHeaders(token),
+    ...withCredentials,
     cache: "no-store",
   });
 
@@ -231,9 +249,9 @@ export async function getFavorites(token: string): Promise<Restaurant[]> {
   return res.json();
 }
 
-export async function getFavoriteIds(token: string): Promise<number[]> {
+export async function getFavoriteIds(): Promise<number[]> {
   const res = await fetch(`${API_BASE_URL}/api/favorites/ids`, {
-    headers: authHeaders(token),
+    ...withCredentials,
     cache: "no-store",
   });
 
@@ -244,13 +262,10 @@ export async function getFavoriteIds(token: string): Promise<number[]> {
   return res.json();
 }
 
-export async function addFavorite(
-  restaurantId: string | number,
-  token: string
-): Promise<void> {
+export async function addFavorite(restaurantId: string | number): Promise<void> {
   const res = await fetch(`${API_BASE_URL}/api/favorites/${restaurantId}`, {
+    ...withCredentials,
     method: "POST",
-    headers: authHeaders(token),
   });
 
   if (!res.ok) {
@@ -261,13 +276,10 @@ export async function addFavorite(
   }
 }
 
-export async function removeFavorite(
-  restaurantId: string | number,
-  token: string
-): Promise<void> {
+export async function removeFavorite(restaurantId: string | number): Promise<void> {
   const res = await fetch(`${API_BASE_URL}/api/favorites/${restaurantId}`, {
+    ...withCredentials,
     method: "DELETE",
-    headers: authHeaders(token),
   });
 
   if (!res.ok) {

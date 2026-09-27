@@ -56,17 +56,16 @@ public class RateLimitService {
     }
 
     public int resolveLimit(String requestUri) {
-        if (requestUri != null && requestUri.startsWith("/api/auth")) {
-            return properties.getAuthLimit();
-        }
-        return properties.getApiLimit();
+        return isCredentialEndpoint(requestUri) ? properties.getAuthLimit() : properties.getApiLimit();
     }
 
     public String resolveBucket(String requestUri) {
-        if (requestUri != null && requestUri.startsWith("/api/auth")) {
-            return "auth";
-        }
-        return "api";
+        return isCredentialEndpoint(requestUri) ? "auth" : "api";
+    }
+
+    /** Stroži limit samo tamo gdje se provjerava lozinka — /me i /logout idu u opšti limit */
+    private boolean isCredentialEndpoint(String requestUri) {
+        return "/api/auth/login".equals(requestUri) || "/api/auth/register".equals(requestUri);
     }
 
     public int getWindowSeconds() {

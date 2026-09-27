@@ -43,7 +43,7 @@ export function LoginForm() {
         email: values.email,
         password: values.password,
       });
-      login(response.token, { name: response.name, email: response.email });
+      login(response);
       const redirect = searchParams.get("redirect");
       router.push(redirect && redirect.startsWith("/") ? redirect : "/");
       router.refresh();

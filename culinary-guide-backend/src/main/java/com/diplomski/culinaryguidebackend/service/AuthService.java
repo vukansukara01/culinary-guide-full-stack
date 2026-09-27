@@ -13,6 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class AuthService {
 
+    public record AuthResult(String token, AuthResponse user) {
+    }
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -23,7 +26,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResult register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
@@ -40,10 +43,10 @@ public class AuthService {
         userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user.getEmail());
-        return new AuthResponse(jwtToken, user.getName(), user.getEmail());
+        return new AuthResult(jwtToken, new AuthResponse(user.getName(), user.getEmail()));
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public AuthResult login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.UNAUTHORIZED,
@@ -58,6 +61,6 @@ public class AuthService {
         }
 
         String jwtToken = jwtService.generateToken(user.getEmail());
-        return new AuthResponse(jwtToken, user.getName(), user.getEmail());
+        return new AuthResult(jwtToken, new AuthResponse(user.getName(), user.getEmail()));
     }
 }

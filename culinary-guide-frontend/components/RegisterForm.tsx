@@ -43,7 +43,7 @@ export function RegisterForm() {
         email: values.email,
         password: values.password,
       });
-      login(response.token, { name: response.name, email: response.email });
+      login(response);
       router.push("/");
       router.refresh();
     } catch (err) {

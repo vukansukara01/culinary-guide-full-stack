@@ -83,7 +83,7 @@ export function Navbar() {
                     {user.name}
                   </span>
                 ) : null}
-                <Button variant="ghost" size="sm" onClick={logout}>
+                <Button variant="ghost" size="sm" onClick={() => void logout()}>
                   <LogOut className="size-3.5" />
                   Odjavi se
                 </Button>
@@ -204,7 +204,7 @@ export function Navbar() {
                     variant="ghost"
                     className="h-11 min-h-11 justify-start"
                     onClick={() => {
-                      logout();
+                      void logout();
                       closeMenu();
                     }}
                   >

@@ -3,14 +3,12 @@ package com.diplomski.culinaryguidebackend.controller;
 import com.diplomski.culinaryguidebackend.dto.PlacesImportResult;
 import com.diplomski.culinaryguidebackend.service.PlacesImportService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin(origins = "*")
 public class PlacesImportController {
 
     private final PlacesImportService placesImportService;
