@@ -25,7 +25,7 @@ public class JwtService {
         if (secret == null || secret.getBytes(StandardCharsets.UTF_8).length < MIN_SECRET_BYTES) {
             throw new IllegalStateException(
                     "JWT tajni ključ nije postavljen ili je kraći od " + MIN_SECRET_BYTES + " bajta. "
-                            + "Postavite env varijablu JWT_SECRET ili app.jwt.secret u application-local.properties."
+                            + "Postavite env varijablu JWT_SECRET (vidi .env.example)."
             );
         }
         this.signInKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));

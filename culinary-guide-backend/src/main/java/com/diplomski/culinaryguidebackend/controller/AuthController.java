@@ -7,6 +7,7 @@ import com.diplomski.culinaryguidebackend.dto.RegisterRequest;
 import com.diplomski.culinaryguidebackend.security.UserPrincipal;
 import com.diplomski.culinaryguidebackend.service.AuthService;
 import com.diplomski.culinaryguidebackend.service.AuthService.AuthResult;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +30,13 @@ public class AuthController {
 
     // Endpoint: POST http://localhost:9090/api/auth/register
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
         return withSessionCookie(authService.register(request));
     }
 
     // Endpoint: POST http://localhost:9090/api/auth/login
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return withSessionCookie(authService.login(request));
     }
 

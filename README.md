@@ -14,13 +14,15 @@ Full-stack platforma za pretragu i recenziju ugostiteljskih objekata.
 
 ```bash
 cd culinary-guide-backend
+cp .env.example .env         # upiši JWT_SECRET (obavezno), GOOGLE_PLACES_API_KEY, ADMIN_EMAILS
+set -a; source .env; set +a  # konfiguracija se čita isključivo iz environment varijabli
 # MySQL (3307) i Redis (6379) se podižu preko compose.yaml
 ./mvnw spring-boot:run
 ```
 
 API: `http://localhost:9090`
 
-Opciono: `export GOOGLE_PLACES_API_KEY=your_key` za Google Places uvoz.
+Produkcija (HTTPS): `JWT_COOKIE_SECURE=true` i `CORS_ALLOWED_ORIGINS=https://tvoj-domen`.
 
 ### Frontend
 

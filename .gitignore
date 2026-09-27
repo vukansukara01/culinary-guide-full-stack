@@ -4,18 +4,16 @@
 .vscode/
 *.iml
 
-# Backend
-culinary-guide-backend/target/
+# Build artefakti
+**/target/
+**/.next/
+**/out/
+**/node_modules/
+*.tsbuildinfo
 culinary-guide-backend/.mvn/wrapper/maven-wrapper.jar
-culinary-guide-backend/src/main/resources/application-local.properties
+culinary-guide-backend/uploads/
 
-# Frontend
-culinary-guide-frontend/node_modules/
-culinary-guide-frontend/.next/
-culinary-guide-frontend/out/
-culinary-guide-frontend/tsconfig.tsbuildinfo
-
-# Secrets / local env
+# Tajne — konfiguracija ide isključivo kroz environment varijable
 .env
 .env.*
 !.env.example

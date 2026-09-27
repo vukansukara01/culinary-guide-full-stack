@@ -1,8 +1,0 @@
-# Kopiraj u application-local.properties i ubaci vrijednosti
-google.places.api-key=PASTE_YOUR_KEY_HERE
-
-# Najmanje 32 bajta — generiši npr. sa: openssl rand -base64 48
-app.jwt.secret=PASTE_A_LONG_RANDOM_SECRET_HERE
-
-# Email naloga koji smije pokretati /api/admin/** (npr. uvoz iz Google Places)
-app.admin.emails=admin@example.com
